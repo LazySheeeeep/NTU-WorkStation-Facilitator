@@ -30,9 +30,7 @@ fi
 
 unset newhome
 
-if [ ! -e "$ORIGIN" ]; then
-    export ORIGIN=$(echo "$XDG_DATA_DIRS" | awk -F: '{print $2}' | awk -F. '{print $1}' | sed 's:/$::')
-fi
+export HUSH=$([ -f "$ORIGIN/.hushlogin" ]; echo $?)
 
 # don't include current path
 PATH=$ORIGIN/.local/bin:$ORIGIN/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
@@ -96,5 +94,5 @@ fi
 unset tmux_ls
 
 unset file_path
-unset HUSH
+
 cd $HOME
