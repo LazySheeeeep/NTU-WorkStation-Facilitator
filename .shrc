@@ -2,7 +2,8 @@
 # those cannot be passed to child process.
 #
 # Ref to .profile for details
-#
+
+file_path="${BASH_SOURCE[0]}"
 
 ## Standard Aliases
 alias mv='mv -i'
@@ -40,7 +41,7 @@ else
   if [ "$WINDOW" != "" ]; then
     export PS1="$LOGNAME@\h {\w} [W$WINDOW] "
   else
-    export PS1="\u@\h [\w] "
+    export PS1="\u@\h [\w] " #this
   fi
 fi
 
@@ -48,12 +49,17 @@ fi
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$($HOME/miniconda3/bin/conda 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
+    if [ $HUSH -ne 0 ]; then
+        echo "$file_path: running commands from $HOME/miniconda3/bin/conda 'shell.bash' 'hook' 2> /dev/null"
+    fi
     eval "$__conda_setup"
 else
     conda_sh="$HOME/miniconda3/etc/profile.d/conda.sh"
     if [ -f "$conda_sh" ]; then
-	echo "$(pwd)/.shrc: running $conda_sh"
-        . "$conda_sh" 
+        if [ $HUSH -ne 0 ]; then
+            echo "$file_path: running $conda_sh"
+        fi
+        . "$conda_sh"
     else
         export PATH="$HOME/miniconda3/bin:$PATH"
     fi
@@ -61,7 +67,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-#echo "conda initialize end"
 
 __env_list="$(conda env list 2> /dev/null)"
 if [ $? -ne 0 ]; then

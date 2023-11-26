@@ -5,6 +5,8 @@
 
 export LC_ALL=zh_TW.UTF-8
 
+file_path="${BASH_SOURCE[0]}"
+
 newhome="/tmp2/$LOGNAME"
 
 if [ ! -d "$newhome" ]; then
@@ -14,13 +16,16 @@ fi
 if [ "$HOME" != "$newhome" ]; then
     export ORIGIN="$HOME"
     export HOME="$newhome"
-    echo ">>> Home shifting >>>"
-    echo "$(pwd)/.profile: Shifted home from $ORIGIN to $HOME."
-    cp -f "$ORIGIN/.shrc" "$HOME/.shrc"
-    cp -f "$ORIGIN/.bashrc" "$HOME/.bashrc"
-    cp -f "$ORIGIN/.profile" "$HOME/.profile"
-    echo "$(pwd)/.profile: .shrc, .bashrc and .profile were all copied to new home."
-    echo "<<< Home shifting <<<"
+    export HUSH=$([ -f "$ORIGIN/.hushlogin" ]; echo $?)
+    if [ $HUSH -ne 0 ]; then
+        echo ">>> Home shifting >>>"
+        echo "$file_path: Shifted home from $ORIGIN to $HOME."
+    fi
+    cp -f "$ORIGIN"/{.shrc,.bashrc,.profile} "$HOME"
+    if [ $HUSH -ne 0 ]; then
+        echo "$file_path: .shrc, .bashrc and .profile were all copied to new home."
+        echo "<<< Home shifting <<<"
+    fi
 fi
 
 unset newhome
@@ -50,8 +55,10 @@ ulimit -S -c 0    # core dumpsize
 umask 022
 
 if [ $SHELL != "/bin/sh" ]; then
-   echo "$(pwd)/.profile: running $ENV"
-   . $ENV
+    if [ $HUSH -ne 0 ]; then
+        echo "$file_path: running $ENV"
+    fi
+    . $ENV
 fi
 
 # those require external programs
@@ -88,4 +95,6 @@ if [ $? -eq 0 ]; then
 fi
 unset tmux_ls
 
+unset file_path
+unset HUSH
 cd $HOME

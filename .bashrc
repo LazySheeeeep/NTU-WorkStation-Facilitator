@@ -3,5 +3,5 @@
 #
  
 ## BASH: this will run on each non-login and interactive shell.
-echo "$(pwd)/.bashrc: running $HOME/.profile"
+echo "${BASH_SOURCE[0]}: running $HOME/.profile"
 . $HOME/.profile
