@@ -100,6 +100,10 @@ unset __env_list
 ## Customs
 alias l=ls
 alias back="cd $ORIGIN"
+
+export G=$ORIGIN/Desktop
+export F=$ORIGIN/Documents
+
 run_on_host() {
     local target_host="$1"
     local command_to_run="$2"
@@ -111,8 +115,17 @@ run_on_host() {
         echo "This command is only available on $target_host, but now it's $(hostname)"
     fi
 }
-alias models='run_on_host "ws3|ws5" "du -h $HOME/.cache/huggingface/hub --max-depth 1 | grep models | sort -rh"'
-alias alpaca='run_on_host "ws2" "cd $HOME/alpaca.cpp && ./chat"'
+models() {
+    if [[ "$(hostname)" =~ ws[345] ]]; then
+        du -h ~/.cache/huggingface/hub --max-depth 1 | grep models | sort -rh
+    else
+        cd ~/models/ && ls | grep -v '\.\./' | xargs du -h --max-depth 1 | sort -rh && cd - 1>/dev/null
+    fi
+}
+alias dllm="python $G/webui/download-model.py --threads 10 --output ~/models/ --specific-file"
+alias llama-server="$G/llama.cpp/server --host $(hostname).csie.ntu.edu.tw -t 32 -np 4 -m"
+alias oobabooga-webui="cd $G/webui/ && python ./server.py --model-dir ~/models --chat-buttons --disk-cache-dir ~/.cache/ --share --gradio-auth drw:1234"
+alias alpaca='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 2048 --repeat_last_n 1024 -i --temp 0.7 -m ~/models/alpaca-7b-q4.ggml"'
 glm() {
-	run_on_host "ws1" "cd $HOME/github_repo/chatglm.cpp/; ./build/bin/main -m ./chatglm3-ggml.bin $1 $2"
+	run_on_host "ws1" "cd ~/chatglm.cpp/ && ./build/bin/main -m ~/models/chatglm3-6b.ggml -t 32 $1"
 }
