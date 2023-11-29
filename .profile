@@ -93,6 +93,8 @@ if [ $? -eq 0 ]; then
 fi
 unset tmux_ls
 
+models
+
 unset file_path
 
 cd $HOME
