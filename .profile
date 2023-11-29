@@ -36,8 +36,6 @@ fi
 
 unset newhome
 
-export HUSH=$([ -f "$ORIGIN/.hushlogin" ]; echo $?)
-
 # don't include current path
 PATH=$ORIGIN/.local/bin:$ORIGIN/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin
 export PATH
