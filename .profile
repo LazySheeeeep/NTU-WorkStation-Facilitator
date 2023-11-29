@@ -26,6 +26,12 @@ if [ "$HOME" != "$newhome" ]; then
         echo "$file_path: .shrc, .bashrc and .profile were all copied to new home."
         echo "<<< Home shifting <<<"
     fi
+    tmux_ls=$(tmux ls 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        echo "tmux: $tmux_ls"
+        echo ""
+    fi
+    unset tmux_ls
 fi
 
 unset newhome
@@ -83,17 +89,11 @@ if [ ! -f "$ORIGIN/.hushlogin" ]; then
     mesg y 2>/dev/null
 fi
 
-
 echo ""
 
-tmux_ls=$(tmux ls 2>/dev/null)
-if [ $? -eq 0 ]; then
-    echo "tmux: $tmux_ls"
-    echo ""
-fi
-unset tmux_ls
-
+echo "model list:"
 models
+echo ""
 
 unset file_path
 
