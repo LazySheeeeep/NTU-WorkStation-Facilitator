@@ -21,10 +21,10 @@ case "$os" in
         export LSCOLORS='ExGxFxdxCxDxDxhbadacad'
         ;;
 "linux")
-        alias ls='ls -a --color -F'
+        alias ls='ls -a --color=auto -F'
         ;;
 "solaris")
-        alias ls='ls -a --color --show-control-chars -F'
+        alias ls='ls -a --color=auto --show-control-chars -F'
         alias ping="ping -s"
         ;;
 esac
