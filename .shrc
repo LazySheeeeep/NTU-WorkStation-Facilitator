@@ -119,7 +119,7 @@ models() {
     if [[ "$(hostname)" =~ ws[345] ]]; then
         du -h ~/.cache/huggingface/hub --max-depth 1 | grep models | sort -rh
     else
-        cd ~/models/ && ls | grep -v '\.\./' | xargs du -h --max-depth 1 | sort -rh && cd - 1>/dev/null
+        cd ~/models/ && du . -h --max-depth 1 | tail -n1 && echo $(ls ~/models | grep -v "\./") ./ | xargs du -h --max-depth 1 | sort -rh | grep G && cd - 1>/dev/null
     fi
 }
 alias dllm="python $G/webui/download-model.py --threads 10 --output ~/models/ --specific-file"
