@@ -21,7 +21,7 @@ if [ "$HOME" != "$newhome" ]; then
         echo ">>> Home shifting >>>"
         echo "$file_path: Shifted home from $ORIGIN to $HOME."
     fi
-    cp -f "$ORIGIN"/{.shrc,.bashrc,.profile} "$HOME"
+    cp -f "$ORIGIN"/.profile "$HOME"
     if [ $HUSH -ne 0 ]; then
         echo "$file_path: .shrc, .bashrc and .profile were all copied to new home."
         echo "<<< Home shifting <<<"
