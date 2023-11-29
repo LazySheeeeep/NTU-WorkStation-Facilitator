@@ -10,9 +10,9 @@ Obviously, if you don't shift your `$HOME`, you have to specify the path of ever
 
 
 - $HOME Shifting code implemented in `.profile`, which will be sourced by `/bin/bash` every time you login.
-- During your $HOME shifting, the three dotfiles will be copy to your new home `/tmp2/yourID`, while your old home dir transfer to `$ORIGIN`.
+- During your $HOME shifting, the `.profile` will be copy to your new home `/tmp2/yourID`, while your old home dir name saved to `$ORIGIN`.
 - When `.profile` is executing, it would automatically source `.shrc`.
-- Set an alias `back` to cd back to old home `$ORIGIN`.
+- Set an alias `back` to `cd` back to old home `$ORIGIN`.
 - Included and upgrade the hushlogin detection. You can mute all the unecessary output everytime you login.
 
 ## Easier Conda Environment Building
@@ -22,8 +22,8 @@ Obviously, if you don't shift your `$HOME`, you have to specify the path of ever
 - Every env created by this conda would completely separate from old home `$ORIGIN`, meaning, no space in old home `$ORIGIN` would be hogged by any thing from python packages. Even if you run python files under `$ORIGIN`.
 - Conda env list would be showed up every time you login, helping you to know about current ws as soon as you login.
 
-## `.bashrc` For Better TMUX Experience
-Every time you use `tmux`, it would automatically source `$HOME/.bashrc` (if you don't have any tmux dotfile/config files). In it, `.profile` would be sourced to reduce error and keep the envionment variables.
+## For Better TMUX Experience
+Every time you use `tmux`, it would automatically source `$HOME/.profile` (if you don't have any tmux dotfile/config files). And it was already copied when you login.
 
 ## Customization
-- You can easily customize your personal settings in `.shrc` in lieu of mine.
+- You can easily customize your personal settings in `.shrc` and `.profile` in lieu of mine.
