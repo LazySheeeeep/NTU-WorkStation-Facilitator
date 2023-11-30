@@ -115,13 +115,15 @@ run_on_host() {
         echo "This command is only available on $target_host, but now it's $(hostname)"
     fi
 }
-models() {
+mls() {
     if [[ "$(hostname)" =~ ws[345] ]]; then
         du -h ~/.cache/huggingface/hub --max-depth 1 | grep models | sort -rh
     else
-        cd ~/models/ && du . -h --max-depth 1 | tail -n1 && echo $(ls ~/models | grep -v "\./") ./ | xargs du -h --max-depth 1 | sort -rh | grep G && cd - 1>/dev/null
+        du ~/models -h --max-depth 1 | tail -n1 && cd ~/models/ && ls | grep -v "\./" | xargs du -h --max-depth 1 | sort -rh | grep G && cd - 1>/dev/null
     fi
 }
+alias ml=mls
+alias models=mls
 alias dllm="python $G/webui/download-model.py --threads 10 --output ~/models/ --specific-file"
 alias llama-server="$G/llama.cpp/server --host $(hostname).csie.ntu.edu.tw -t 32 -np 4 -m"
 alias oobabooga-webui="cd $G/webui/ && python ./server.py --model-dir ~/models --chat-buttons --disk-cache-dir ~/.cache/ --share --gradio-auth drw:1234"

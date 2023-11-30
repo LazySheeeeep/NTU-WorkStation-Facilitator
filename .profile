@@ -89,8 +89,7 @@ fi
 
 echo ""
 
-echo "model list:"
-models
+mls
 echo ""
 
 unset file_path
