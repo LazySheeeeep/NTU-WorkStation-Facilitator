@@ -117,9 +117,9 @@ run_on_host() {
 }
 mls() {
     if [[ "$(hostname)" =~ ws[345] ]]; then
-        du -h ~/.cache/huggingface/hub --max-depth 1 | grep models | sort -rh
+        du ~/.cache/huggingface/hub -h --max-depth 0 && du -h ~/.cache/huggingface/hub --max-depth 1 | grep "models" | sort -rh | awk '{print NR".", $0}'
     else
-        du ~/models -h --max-depth 1 | tail -n1 && cd ~/models/ && ls | grep -v "\./" | xargs du -h --max-depth 1 | sort -rh | grep G && cd - 1>/dev/null
+        du ~/models -h --max-depth 0 && cd ~/models/ && ls | grep -v "\./" | xargs du -h --max-depth 0 | sort -rh | grep -E "[GM]" | awk '{print NR".", $0}' && cd - 1>/dev/null
     fi
 }
 alias ml=mls
