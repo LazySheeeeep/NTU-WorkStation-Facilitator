@@ -116,18 +116,18 @@ run_on_host() {
     fi
 }
 mls() {
-    if [[ "$(hostname)" =~ ws[345] ]]; then
-        du ~/.cache/huggingface/hub -h --max-depth 0 && du -h ~/.cache/huggingface/hub --max-depth 1 | grep "models" | sort -rh | awk '{print NR".", $0}'
-    else
-        du ~/models -h --max-depth 0 && cd ~/models/ && ls | grep -v "\./" | xargs du -h --max-depth 0 | sort -rh | grep -E "[GM]" | awk '{print NR".", $0}' && cd - 1>/dev/null
-    fi
+    du ~/models -h --max-depth 0 && cd ~/models/ && ls | grep -v "\./" | xargs du -h --max-depth 0 | sort -rh | grep -E "[GM]" | awk '{print NR".", $0}' && cd - 1>/dev/null
 }
 alias ml=mls
 alias models=mls
 alias dllm="python $G/webui/download-model.py --threads 10 --output ~/models/ --specific-file"
-alias llama-server="$G/llama.cpp/server --host $(hostname).csie.ntu.edu.tw -t 32 -np 4 -m"
-alias oobabooga-webui="cd $G/webui/ && python ./server.py --model-dir ~/models --chat-buttons --disk-cache-dir ~/.cache/ --share --gradio-auth drw:1234"
-alias alpaca='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 2048 --repeat_last_n 1024 -i --temp 0.7 -m ~/models/alpaca-7b-q4.ggml"'
+alias llama-server="$G/llama.cpp/server --host $(hostname).csie.ntu.edu.tw -t 32 -np 4 -c 9000 -m"
+alias llama-server-gpu="$G/llama-gpu/server --host $(hostname).csie.ntu.edu.tw -ngl 128 -c 9000 -m"
+alias oobabooga-webui="cd $G/webui/ && python ./server.py --model-dir ~/models --chat-buttons --disk-cache-dir ~/.cache/ --gradio-auth-path auth.txt --listen --listen-port 3794 --listen-host $(hostname).csie.ntu.edu.tw --api --api-port 3795"
+alias alpaca7='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 2048 -i --repeat_penalty 1.15 --temp 0.7 -m ~/models/alpaca-7b-q4.ggml"'
+alias alpaca13='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 1500 --repeat_penalty 1.15 --temp 0.5 -m ~/models/alpaca-13b-q4.ggml"'
 glm() {
 	run_on_host "ws1" "cd ~/chatglm.cpp/ && ./build/bin/main -m ~/models/chatglm3-6b.ggml -t 32 $1"
 }
+alias a='tmux a'
+
