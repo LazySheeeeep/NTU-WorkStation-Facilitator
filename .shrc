@@ -124,10 +124,16 @@ alias dllm="python $G/webui/download-model.py --threads 10 --output ~/models/ --
 alias llama-server="$G/llama.cpp/server --host $(hostname).csie.ntu.edu.tw -t 32 -np 4 -c 9000 -m"
 alias llama-server-gpu="$G/llama-gpu/server --host $(hostname).csie.ntu.edu.tw -ngl 128 -c 9000 -m"
 alias oobabooga-webui="cd $G/webui/ && python ./server.py --model-dir ~/models --chat-buttons --disk-cache-dir ~/.cache/ --gradio-auth-path auth.txt --listen --listen-port 3794 --listen-host $(hostname).csie.ntu.edu.tw --api --api-port 3795"
-alias alpaca7='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 2048 -i --repeat_penalty 1.15 --temp 0.7 -m ~/models/alpaca-7b-q4.ggml"'
-alias alpaca13='run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 1500 --repeat_penalty 1.15 --temp 0.5 -m ~/models/alpaca-13b-q4.ggml"'
+
+alpaca7(){
+	run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 2048 -i --repeat_penalty 1.15 --temp 0.7 -m ~/models/alpaca-7b-q4.ggml $1"
+}
+alpaca13(){
+	run_on_host "ws2" "cd ~/alpaca.cpp && ./chat -t 32 -n 1500 -i --repeat_penalty 1.15 --temp 0.5 -m ~/models/alpaca-13b-q4.ggml $1"
+}
+
 glm() {
 	run_on_host "ws1" "cd ~/chatglm.cpp/ && ./build/bin/main -m ~/models/chatglm3-6b.ggml -t 32 $1"
 }
 alias a='tmux a'
-
+alias alpaca=alpaca7
